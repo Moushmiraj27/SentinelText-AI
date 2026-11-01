@@ -1,0 +1,5 @@
+# Optional, larger model stack for local Hugging Face emotion and embedding inference.
+# Install after requirements.txt when model inference is desired.
+-r requirements.txt
+transformers>=4.44.0
+sentence-transformers>=3.0.0

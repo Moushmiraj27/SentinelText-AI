@@ -1,0 +1,157 @@
+:root {
+  color-scheme: light;
+  --canvas: #faf7f0;
+  --surface: #fffefa;
+  --surface-raised: #ffffff;
+  --surface-subtle: #f5f1e9;
+  --surface-lilac: #f0eaf6;
+  --border: #e9e3d9;
+  --border-strong: #dbd2e3;
+  --text-strong: #302b39;
+  --text: #514a5b;
+  --text-muted: #898290;
+  --accent: #705992;
+  --accent-strong: #584277;
+  --accent-soft: #eee7f4;
+  --accent-border: #dfd4e9;
+  --orange: #bc754a;
+  --orange-soft: #f9eee4;
+  --teal: #5c8d7d;
+  --teal-soft: #eaf2ed;
+  --danger: #a5505b;
+  --danger-soft: #fbefee;
+  --focus-ring: 0 0 0 3px rgb(112 89 146 / 18%);
+  --shadow-soft: 0 10px 28px rgb(54 42 70 / 5%);
+  background: var(--canvas);
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --canvas: #171a24;
+  --surface: #202431;
+  --surface-raised: #282d3b;
+  --surface-subtle: #252938;
+  --surface-lilac: #2b2939;
+  --border: #383d4d;
+  --border-strong: #51465f;
+  --text-strong: #f2eff7;
+  --text: #d5d1df;
+  --text-muted: #a7a6b8;
+  --accent: #b7a0d9;
+  --accent-strong: #d2c0ec;
+  --accent-soft: #332d42;
+  --accent-border: #514563;
+  --orange: #e2a078;
+  --orange-soft: #3b302d;
+  --teal: #8fc1ae;
+  --teal-soft: #293a36;
+  --danger: #e3a0a7;
+  --danger-soft: #3b292f;
+  --focus-ring: 0 0 0 3px rgb(183 160 217 / 25%);
+  --shadow-soft: 0 12px 32px rgb(0 0 0 / 20%);
+  background: var(--canvas);
+}
+html, body, #root { min-height: 100%; background: var(--canvas); color: var(--text-strong); }
+body, .app-shell, .app-sidebar, .app-topbar, .app-content, .auth-page, .auth-main, .auth-card,
+.sidebar-link, .topbar-icon-button, .primary, .secondary, .panel, .journal-card, .journal-compose,
+.prompt-card, .stat-card, .recommend-card, .relation-card, .empty-card, .search-box, .record-zone,
+.setting-card, .history-panel, .modal, .alert, input, textarea, select, button {
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.theme-toggle { min-width: 70px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 9px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface-subtle); color: var(--text); font-size: 11px; }
+.theme-toggle:hover { background: var(--accent-soft); color: var(--accent-strong); }
+.theme-toggle span { line-height: 1; }
+@media(max-width:760px) { .theme-toggle { min-width: 36px; width: 36px; height: 32px; padding: 6px; } .theme-toggle span { display: none; } }
+:root[data-theme='dark'] .auth-story { background: #242333; border-color: var(--border); }
+:root[data-theme='dark'] .auth-brand, :root[data-theme='dark'] .auth-story-copy h1,
+:root[data-theme='dark'] .landing-page>h1 { color: var(--text-strong); }
+:root[data-theme='dark'] .auth-story-copy>p, :root[data-theme='dark'] .auth-card-heading p,
+:root[data-theme='dark'] .auth-footer { color: var(--text-muted); }
+:root[data-theme='dark'] .auth-promise b { color: var(--text); }
+:root[data-theme='dark'] .auth-promise small { color: var(--text-muted); }
+:root[data-theme='dark'] .auth-orb { opacity: .22; }
+:root[data-theme='dark'] .welcome { background: linear-gradient(112deg, #292735 0%, #292737 70%, #252d2c 100%); border-color: var(--border); }
+:root[data-theme='dark'] .welcome h1, :root[data-theme='dark'] .section-heading h2,
+:root[data-theme='dark'] .page-intro h1, :root[data-theme='dark'] .reflection-card p { color: var(--text-strong); }
+:root[data-theme='dark'] .welcome p, :root[data-theme='dark'] .page-intro p,
+:root[data-theme='dark'] .muted, :root[data-theme='dark'] .chart-caption { color: var(--text-muted); }
+:root[data-theme='dark'] .prompt-card, :root[data-theme='dark'] .panel,
+:root[data-theme='dark'] .journal-card, :root[data-theme='dark'] .journal-compose,
+:root[data-theme='dark'] .stat-card, :root[data-theme='dark'] .recommend-card,
+:root[data-theme='dark'] .relation-card, :root[data-theme='dark'] .empty-card,
+:root[data-theme='dark'] .search-box, :root[data-theme='dark'] .setting-card,
+:root[data-theme='dark'] .history-panel, :root[data-theme='dark'] .modal,
+:root[data-theme='dark'] .auth-card, :root[data-theme='dark'] .landing-features>div {
+  background: var(--surface); border-color: var(--border); color: var(--text);
+}
+:root[data-theme='dark'] .record-zone, :root[data-theme='dark'] .search-box select,
+:root[data-theme='dark'] .journal-compose textarea, :root[data-theme='dark'] .search-box input,
+:root[data-theme='dark'] .auth-form input:not([type=checkbox]), :root[data-theme='dark'] .modal-close,
+:root[data-theme='dark'] .profile-menu, :root[data-theme='dark'] .transcript-box {
+  background: var(--surface-raised); border-color: var(--border); color: var(--text-strong);
+}
+:root[data-theme='dark'] .journal-date b, :root[data-theme='dark'] .journal-card-body>p,
+:root[data-theme='dark'] .panel-title>span, :root[data-theme='dark'] .panel-heading>span,
+:root[data-theme='dark'] .record-zone h3, :root[data-theme='dark'] .field-label,
+:root[data-theme='dark'] .setting-content h3, :root[data-theme='dark'] .danger-zone h3,
+:root[data-theme='dark'] .recommend-card h3, :root[data-theme='dark'] .history-row,
+:root[data-theme='dark'] .node, :root[data-theme='dark'] .modal h2,
+:root[data-theme='dark'] .landing-features b { color: var(--text); }
+:root[data-theme='dark'] .journal-date small, :root[data-theme='dark'] .record-zone p,
+:root[data-theme='dark'] .journal-card-body small, :root[data-theme='dark'] .setting-content p,
+:root[data-theme='dark'] .danger-zone p, :root[data-theme='dark'] .recommend-card>p,
+:root[data-theme='dark'] .landing-features p, :root[data-theme='dark'] .landing-copy,
+:root[data-theme='dark'] .week-day small, :root[data-theme='dark'] .history-row small,
+:root[data-theme='dark'] .connector, :root[data-theme='dark'] .trend-point,
+:root[data-theme='dark'] .trend-point small, :root[data-theme='dark'] .reflection-card span { color: var(--text-muted); }
+:root[data-theme='dark'] .reflection-card, :root[data-theme='dark'] .ai-reflection,
+:root[data-theme='dark'] .notice-line, :root[data-theme='dark'] .entry-chips button,
+:root[data-theme='dark'] .feedback button, :root[data-theme='dark'] .mini-action,
+:root[data-theme='dark'] .node.feeling, :root[data-theme='dark'] .recommend-icon,
+:root[data-theme='dark'] .feature-icon, :root[data-theme='dark'] .prompt-icon,
+:root[data-theme='dark'] .date-icon, :root[data-theme='dark'] .setting-icon {
+  background: var(--accent-soft); border-color: var(--accent-border); color: var(--accent-strong);
+}
+:root[data-theme='dark'] .situation { background: #3b3329; border-color: #594b38; color: #ead8ba; }
+:root[data-theme='dark'] .activity { background: #293a35; border-color: #3c544b; color: #c2dfd1; }
+:root[data-theme='dark'] .hue-1 { background: #293a35; color: var(--teal); }
+:root[data-theme='dark'] .hue-2 { background: #3b302d; color: var(--orange); }
+:root[data-theme='dark'] .hue-3 { background: #2d3542; color: #b2c5e0; }
+:root[data-theme='dark'] .bar-track, :root[data-theme='dark'] .hbar { background: #333848; }
+:root[data-theme='dark'] .bar-track i, :root[data-theme='dark'] .hbar i { background: #aa91ce; }
+:root[data-theme='dark'] .emotion-pill { background: var(--accent-soft); color: var(--accent-strong); }
+:root[data-theme='dark'] .emotion-pill.stress, :root[data-theme='dark'] .emotion-pill.anxiety { background: #3b302d; color: var(--orange); }
+:root[data-theme='dark'] .emotion-pill.happiness, :root[data-theme='dark'] .emotion-pill.calm { background: #293a35; color: var(--teal); }
+:root[data-theme='dark'] .emotion-pill.sadness { background: #2d3542; color: #b2c5e0; }
+:root[data-theme='dark'] .emotion-pill.frustration { background: #3b292f; color: var(--danger); }
+:root[data-theme='dark'] .alert.error, :root[data-theme='dark'] .auth-error { background: var(--danger-soft); border-color: #614047; color: var(--danger); }
+:root[data-theme='dark'] .alert.success, :root[data-theme='dark'] .auth-success { background: var(--teal-soft); border-color: #3b554b; color: var(--teal); }
+:root[data-theme='dark'] .landing-privacy, :root[data-theme='dark'] .safety-note { background: var(--teal-soft); color: var(--teal); }
+:root[data-theme='dark'] .landing-privacy p, :root[data-theme='dark'] .safety-note p { color: #b9d0c6; }
+:root[data-theme='dark'] .danger-zone { background: #30272d; border-color: #543a42; }
+:root[data-theme='dark'] .profile-menu { box-shadow: var(--shadow-soft); }
+:root[data-theme='dark'] .week-day, :root[data-theme='dark'] .emotion-bars>div { color: var(--text-muted); }
+.auth-page { position: relative; }
+.auth-theme-toggle { position: fixed; top: 16px; right: 18px; z-index: 8; display: inline-flex; align-items: center; gap: 7px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); box-shadow: var(--shadow-soft); font-size: 12px; }
+.auth-theme-toggle:hover { background: var(--accent-soft); color: var(--accent-strong); }
+@media(max-width:800px) { .auth-theme-toggle { top: 12px; right: 12px; } }
+:root[data-theme='dark'] .theme-row { border-color: var(--border); }
+:root[data-theme='dark'] .theme-row b, :root[data-theme='dark'] .profile-id,
+:root[data-theme='dark'] .setting-content code, :root[data-theme='dark'] .danger-button,
+:root[data-theme='dark'] .mini-action, :root[data-theme='dark'] .entry-chips button,
+:root[data-theme='dark'] .feedback button { color: var(--text); border-color: var(--border); }
+:root[data-theme='dark'] .theme-row small, :root[data-theme='dark'] .profile-id,
+:root[data-theme='dark'] .setting-content code { background: var(--surface-subtle); }
+:root[data-theme='dark'] .toggle { background: #505466; }
+:root[data-theme='dark'] .toggle-row input:checked + .toggle { background: var(--accent); }
+:root[data-theme='dark'] .danger-button { background: #30272d; border-color: #614047; color: var(--danger); }
+:root[data-theme='dark'] .compose-divider:before, :root[data-theme='dark'] .compose-divider:after,
+:root[data-theme='dark'] .journal-card-body, :root[data-theme='dark'] .history-row,
+:root[data-theme='dark'] .relation-footer, :root[data-theme='dark'] .feedback,
+:root[data-theme='dark'] .recommend-card details { border-color: var(--border); }
+:root[data-theme='dark'] .search-box select { color: var(--text); }
+:root[data-theme='dark'] .journal-compose textarea::placeholder,
+:root[data-theme='dark'] .search-box input::placeholder,
+:root[data-theme='dark'] .auth-form input::placeholder { color: #85899a; }
+:root[data-theme='dark'] .map-legend, :root[data-theme='dark'] .analysis-foot,
+:root[data-theme='dark'] .compose-bottom>span, :root[data-theme='dark'] .fine-print,
+:root[data-theme='dark'] .auth-story-foot, :root[data-theme='dark'] .auth-kicker { color: var(--text-muted); }

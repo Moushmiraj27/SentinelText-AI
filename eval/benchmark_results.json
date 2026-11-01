@@ -1,0 +1,106 @@
+{
+  "total_cases": 12,
+  "overall_pass_rate_pct": 100.0,
+  "entity_accuracy_pct": 100.0,
+  "math_fidelity_pct": 100.0,
+  "msp_accuracy_pct": 100.0,
+  "average_latency_ms": 6.93,
+  "results": [
+    {
+      "id": 1,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 30.567899986635894
+    },
+    {
+      "id": 2,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 5.598400020971894
+    },
+    {
+      "id": 3,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 6.542599992826581
+    },
+    {
+      "id": 4,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 4.769399994984269
+    },
+    {
+      "id": 5,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 4.497800022363663
+    },
+    {
+      "id": 6,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 6.294200022239238
+    },
+    {
+      "id": 7,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 4.617300000973046
+    },
+    {
+      "id": 8,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 4.653400043025613
+    },
+    {
+      "id": 9,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 4.587400006130338
+    },
+    {
+      "id": 10,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 3.939000016544014
+    },
+    {
+      "id": 11,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 3.5337000153958797
+    },
+    {
+      "id": 12,
+      "passed": true,
+      "entity": true,
+      "math": true,
+      "msp": true,
+      "latency": 3.583499987144023
+    }
+  ]
+}
