@@ -1,210 +1,693 @@
 # SentinelText
 
-**A private space for voice journaling and self-reflection.**
+### AI-Assisted Longitudinal Mental Wellness Monitoring & Early-Warning Support Platform
 
-SentinelText is a full-stack journaling application that lets a signed-in person record or write reflections, review transparent language-based emotion labels, and explore recurring themes and optional coping activities. It is a self-reflection tool, not a diagnostic or emergency service.
+> **From isolated emotional check-ins to meaningful longitudinal
+> insights.**
+>
+> A privacy-conscious prototype that helps users reflect on emotional
+> patterns over time through journaling, emotion analysis,
+> recurring-theme detection, and personalized coping suggestions.
 
-## Problem and objectives
+------------------------------------------------------------------------
 
-People often want a low-pressure way to record thoughts and revisit patterns over time. SentinelText provides a private, account-scoped journal and makes the analysis understandable: saved language labels and recurring wording are presented as observations, not clinical measurements or explanations of cause.
+## Table of Contents
 
-Project objectives:
+-   [Overview](#overview)
+-   [Problem Statement](#problem-statement)
+-   [Our Approach](#our-approach)
+-   [Key Features](#key-features)
+-   [Technology Stack](#technology-stack)
+-   [System Architecture](#system-architecture)
+-   [AI/ML Workflow](#aiml-workflow)
+-   [Project Structure](#project-structure)
+-   [Getting Started](#getting-started)
+-   [Environment Configuration](#environment-configuration)
+-   [Running the Application](#running-the-application)
+-   [API Documentation](#api-documentation)
+-   [Privacy and Security](#privacy-and-security)
+-   [Current Scope and Limitations](#current-scope-and-limitations)
+-   [Future Roadmap](#future-roadmap)
+-   [Contributing](#contributing)
+-   [Disclaimer](#disclaimer)
 
-- Provide voice and text journaling with user-controlled transcription.
-- Keep entries and analysis scoped to an authenticated account.
-- Make the analysis method and optional external processing visible.
-- Support review, correction, feedback, and deletion of personal journal data.
-- Offer a polished responsive interface with persistent light and dark themes.
+------------------------------------------------------------------------
 
-## Features
+## Overview
 
-- Email signup, login, remembered sessions, logout, and expiring single-use password reset.
-- Argon2 password hashes and JWT sessions in HttpOnly cookies.
-- Consent-gated microphone recording, audio playback, editable transcripts, and manual journaling.
-- Dashboard counts, date filters, recent entries, and recorded emotion trends.
-- Emotional Echo groups related saved entries, displays date-filtered counts, and lets users confirm, rename, dismiss, or restore themes.
-- Trigger & Relief Mapper groups reviewable situation/emotion/activity associations and supports user-added patterns.
-- Coping Intelligence provides optional suggestions grounded in saved entries, confirmed patterns, and user feedback.
-- Searchable journal history, per-entry deletion, and deletion of all account journal data.
-- Responsive navigation and persisted light/dark theme preference.
+**SentinelText** is an AI-assisted mental wellness monitoring prototype
+designed to help users understand their emotional experiences over time.
 
-## Technology
+Traditional check-ins and isolated assessments may not always capture
+recurring emotional patterns or changes in a person's experiences.
+SentinelText explores a more continuous and reflective approach by
+connecting personal journal entries, approximate emotion identification,
+recurring themes, and user-reported activities.
 
-| Area | Technology |
-| --- | --- |
-| Frontend | React 19, TypeScript, Vite, Tailwind CSS, Lucide icons |
-| Backend | Python, FastAPI, Pydantic, SQLAlchemy |
-| Authentication | Argon2 (`pwdlib`), signed JWT, HttpOnly cookie |
-| Local database | SQLite |
-| Production database | PostgreSQL through SQLAlchemy and psycopg 3 |
-| Local language analysis | Keyword lexicon and scikit-learn TF-IDF similarity |
-| Optional integrations | Groq Whisper / chat reflections; Hugging Face emotion model; Sentence Transformers |
+Rather than treating every journal entry as an isolated piece of
+information, the platform aims to build a longitudinal view of emotional
+experiences and provide understandable, supportive insights.
 
-## Architecture
+The project is being developed in the context of **Smart India Hackathon
+(SIH) 2026**, under the problem statement:
 
-```mermaid
-flowchart LR
-    Browser[React and Vite browser app] -->|Same-origin /api, HttpOnly cookie| API[FastAPI app]
-    API --> Auth[Authentication and account scoping]
-    API --> Routes[Journal and wellness routes]
-    Routes --> Services[Analysis, Emotional Echo, mapper, coping]
-    Auth --> DB[(SQLite for local development)]
-    Services --> DB
-    DB -. production DATABASE_URL .-> PG[(Managed PostgreSQL)]
-    API -. only after explicit user action or consent .-> Groq[Groq Whisper / optional reflections]
-    Services -. optional local model configuration .-> Models[Hugging Face / Sentence Transformers]
+**SIH26094 --- AI-Powered Dynamic Mental Health Monitoring and Distress
+Prediction System for Victims of Atrocities.**
+
+> **Project status:** The current implementation is a working prototype.
+> Advanced distress prediction, professional monitoring dashboards, and
+> case-management capabilities are part of the proposed development
+> roadmap, not claims about the existing implementation.
+
+------------------------------------------------------------------------
+
+## Problem Statement
+
+Emotional well-being is dynamic. A person's emotional state can change
+in response to personal experiences, environmental conditions, stressful
+situations, and everyday activities.
+
+However, conventional approaches often rely on:
+
+-   Isolated check-ins or one-time assessments.
+-   Self-reported information that may not capture recurring patterns.
+-   Limited visibility into changes across time.
+-   A lack of structured connections between emotional experiences,
+    possible triggers, and helpful activities.
+-   Difficulty maintaining continuity between individual interactions.
+
+This creates an opportunity for technology that supports continuous
+reflection and helps organize relevant information over time.
+
+------------------------------------------------------------------------
+
+## Our Approach
+
+SentinelText follows a user-centered, longitudinal approach:
+
+1.  **Capture** --- Users record personal experiences through journal
+    entries and voice-based input.
+2.  **Analyze** --- The system processes journal text to identify
+    approximate emotional signals.
+3.  **Connect** --- Similar entries and recurring themes are grouped to
+    reveal patterns.
+4.  **Understand** --- Users can explore possible connections between
+    situations, emotional experiences, and activities.
+5.  **Support** --- The platform provides personalized coping activity
+    suggestions and reflective insights.
+
+The objective is to support awareness and continuity --- not to replace
+professional mental healthcare.
+
+------------------------------------------------------------------------
+
+## Key Features
+
+### 1. Secure User Authentication
+
+-   User registration and login.
+-   Password hashing.
+-   Authentication-based access to user-specific information.
+-   JWT-based authentication configuration.
+
+### 2. Personal Journaling
+
+-   Create and maintain private journal entries.
+-   Record personal experiences and reflections.
+-   Maintain historical entries for longitudinal exploration.
+
+### 3. Voice-to-Text Input
+
+-   Voice-based journal input through transcription.
+-   Makes it easier to record reflections without manually typing
+    everything.
+
+### 4. Emotion Analysis
+
+-   Rule-based emotion identification from journal text.
+-   Provides approximate emotional signals for reflection.
+-   Designed as an initial analysis layer that can be extended with more
+    advanced NLP models.
+
+### 5. Emotional Echo
+
+-   Identifies similarities between journal entries.
+-   Uses text similarity to discover recurring themes.
+-   Helps users explore patterns that may not be obvious from individual
+    entries.
+
+### 6. Trigger & Relief Mapper
+
+-   Connects reported situations and emotional patterns with activities.
+-   Helps users reflect on activities they associate with feeling better
+    or worse.
+-   Encourages awareness of personal patterns.
+
+### 7. Personalized Coping Suggestions
+
+-   Provides supportive activity recommendations.
+-   Encourages healthy reflection and self-awareness.
+
+### 8. 30-Day Emotional Journey
+
+-   Presents a time-based view of emotional experiences.
+-   Helps users explore changes and recurring patterns across journal
+    history.
+
+### 9. User Interface
+
+-   React-based responsive interface.
+-   Light and dark theme support.
+-   Dedicated views for journaling, insights, and emotional patterns.
+
+------------------------------------------------------------------------
+
+## Technology Stack
+
+  -----------------------------------------------------------------------
+  Layer                   Technologies            Purpose
+  ----------------------- ----------------------- -----------------------
+  Frontend                React, TypeScript       User interface and
+                                                  application logic
+
+  Build Tool              Vite                    Frontend development
+                                                  and production builds
+
+  Backend                 Python, FastAPI         REST API and
+                                                  application services
+
+  ORM                     SQLAlchemy              Database interaction
+
+  Database                SQLite                  Local development and
+                                                  persistent storage
+
+  Authentication          JWT, password hashing   Authentication and
+                                                  access control
+
+  NLP                     Python NLP libraries    Text processing and
+                                                  emotion-related
+                                                  analysis
+
+  Text Vectorization      TF-IDF                  Numerical
+                                                  representation of
+                                                  journal text
+
+  Similarity Analysis     Cosine Similarity       Identifying related
+                                                  journal entries
+
+  ML Extensions           Sentence Transformers,  Potential semantic and
+                          Hugging Face            emotion-analysis
+                                                  extensions
+
+  External AI Integration Groq (optional          Optional AI-assisted
+                          integration)            functionality where
+                                                  configured
+
+  Version Control         Git, GitHub             Source code management
+                                                  and collaboration
+  -----------------------------------------------------------------------
+
+**Core implementation:** React, TypeScript, Vite, Python, FastAPI,
+SQLAlchemy, SQLite, and the existing text-analysis components.
+
+Some listed technologies represent optional integrations or extension
+paths. Their presence in this table does not imply that every model or
+external service is required to run the current prototype.
+
+------------------------------------------------------------------------
+
+## System Architecture
+
+SentinelText follows a frontend-backend architecture with separate
+application, authentication, data, and analysis responsibilities.
+
+### High-Level Architecture
+
+``` mermaid
+flowchart TD
+    A[User] --> B[React + TypeScript Frontend]
+    B --> C[FastAPI Backend]
+
+    C --> D[Authentication Layer]
+    C --> E[Application Services]
+
+    D --> F[User Access Control]
+    E --> G[Journal Management]
+    E --> H[Emotion Analysis]
+    E --> I[Pattern Analysis]
+
+    G --> J[(SQLite Database)]
+    F --> J
+
+    H --> K[Emotion Signals]
+    I --> L[TF-IDF and Cosine Similarity]
+
+    K --> M[Insights and Emotional Journey]
+    L --> M
+
+    M --> B
 ```
 
-## Project structure
+### Architecture Components
 
-```text
-api/
-  index.py                 Vercel adapter for backend.main:app
-backend/
-  auth/                     Password hashing, sessions, reset email
-  routes/                   Authentication and wellness API routes
-  services/                 Analysis, Emotional Echo, personalized insights
-  tests/                    Backend integration tests with isolated SQLite
-  database.py               SQLAlchemy engine and safe table initialization
-  models.py                 SQLAlchemy data models
-  schemas.py                Request validation
-frontend/src/
-  components/               Screens, reusable UI, application shell
-  hooks/                    Theme hook
-  services/                 Authenticated API client
-  App.tsx                   Auth state and page orchestration
-  *.css                     Design tokens and page styles
-eval/                       Existing evaluation artifacts
+**1. Presentation Layer**
+
+-   Built using React and TypeScript.
+-   Handles user interaction, journal input, navigation, and
+    visualization.
+-   Communicates with the backend through API requests.
+
+**2. Backend / API Layer**
+
+-   Built using FastAPI.
+-   Handles incoming requests and application logic.
+-   Separates authentication, journal operations, and analysis
+    functionality.
+
+**3. Authentication Layer**
+
+-   Manages user registration and login.
+-   Uses password hashing and JWT-based authentication.
+-   Supports user-specific data access.
+
+**4. Data Layer**
+
+-   Uses SQLAlchemy for database operations.
+-   SQLite is used for local development and data persistence.
+-   A production database configuration should be selected and validated
+    before deployment.
+
+**5. AI/NLP Processing Layer**
+
+-   Processes journal text.
+-   Performs approximate emotion identification.
+-   Applies text similarity techniques to discover recurring themes.
+-   Supplies analysis results to the application's insight features.
+
+------------------------------------------------------------------------
+
+## AI/ML Workflow
+
+The current prototype uses text-processing and similarity-analysis
+techniques to explore patterns in journal entries.
+
+``` mermaid
+flowchart TD
+    A[Journal Entry] --> B[Text Preprocessing]
+    B --> C[Emotion Identification]
+    B --> D[Text Vectorization]
+
+    C --> E[Emotion Signals]
+    D --> F[TF-IDF Vectors]
+    F --> G[Cosine Similarity]
+
+    G --> H[Related Entry Grouping]
+    E --> I[Emotional Pattern Insights]
+    H --> I
+
+    I --> J[Longitudinal Reflection]
+    J --> K[User-Facing Insights]
 ```
 
-Local SQLite databases and environment files are ignored by Git. `trades.db` is preserved but is not used by SentinelText.
+### Techniques Used
 
-## How the analysis works
+  Technique             Application
+  --------------------- ------------------------------------------------
+  Text Preprocessing    Preparing journal text for analysis
+  Rule-Based Analysis   Approximate emotion identification
+  TF-IDF                Converting text into numerical feature vectors
+  Cosine Similarity     Measuring similarity between journal entries
+  Similarity Grouping   Connecting entries with recurring themes
 
-The default emotion and topic labels use a transparent local keyword lexicon. These labels can be wrong and are not validated psychological measurements. Emotional Echo uses local TF-IDF cosine similarity to group related journal wording by default. Optionally, `SENTINEL_EMOTION_MODEL` enables a Hugging Face text classifier, and `SENTENCE_TRANSFORMER_MODEL` enables local sentence embeddings. If an optional model cannot load, the app falls back to its local implementation.
+### Future AI/ML Extensions
 
-Groq Whisper is used only when the user explicitly requests transcription. Optional Groq reflections in Emotional Echo are off by default and require both a configured key and the user's saved consent. Trigger & Relief Mapper and Coping Intelligence use local journal text and saved feedback; they do not send that text to an external AI provider.
+The architecture can be extended with:
 
-## Authentication and privacy
+-   Transformer-based emotion classification.
+-   Sentence embeddings for semantic similarity.
+-   Improved contextual understanding of journal entries.
+-   Longitudinal trend analysis.
+-   Explainable indicators for human-reviewed support workflows.
 
-The backend hashes passwords with Argon2 and signs JWT session cookies with `JWT_SECRET_KEY`. Cookies are HttpOnly and SameSite=Lax; `Secure` is enabled by default on Vercel and should be explicitly enabled for any HTTPS deployment. API handlers obtain the account from the verified cookie, not from a client-provided user ID. CORS credentials require an explicit origin list; wildcard origins are rejected.
+These extensions require further implementation, testing, and
+validation.
 
-Local development uses SQLite. **Vercel serverless storage is not persistent**, so a Vercel deployment now requires `DATABASE_URL` pointing to a persistent PostgreSQL database. The application does not copy or publish either existing local SQLite database. Configure a managed PostgreSQL service separately and store its connection string as a private Vercel environment variable. Use its pooled/serverless connection endpoint when provided.
+------------------------------------------------------------------------
 
-Password-reset email is unavailable until SMTP is configured. Journal audio and transcripts contain sensitive personal data; use a private database, restrict access, and configure backups and retention with your database provider. The app offers deletion of account journal data, but does not currently provide account deletion.
+## Project Structure
 
-## Local installation and run
+The repository is organized around separate frontend and backend
+applications.
 
-Requirements: Python 3.10 or later; Node.js 20.19+ or 22.12+ (required by the current Vite version).
+``` text
+SentinelText-AI/
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   ├── package-lock.json
+│   └── vite.config.ts
+├── backend/
+│   ├── services/
+│   ├── auth/
+│   ├── requirements.txt
+│   └── main.py
+├── .gitignore
+└── README.md
+```
 
-### 1. Backend (PowerShell)
+*Note: This is a high-level representation of the project structure.
+Refer to the repository for the complete and current directory layout.*
 
-From the repository root:
+------------------------------------------------------------------------
 
-```powershell
-python -m venv .venv
+## Getting Started
+
+Follow these steps to run SentinelText locally.
+
+### Prerequisites
+
+Make sure the following are installed:
+
+-   Python 3.12
+-   Node.js and npm
+-   Git
+
+Check your installations:
+
+``` bash
+python --version
+node --version
+npm --version
+git --version
+```
+
+### 1. Clone the Repository
+
+``` bash
+git clone https://github.com/dnyanu0909/SentinelText-AI.git
+cd SentinelText-AI
+```
+
+### 2. Set Up the Backend
+
+Create a Python virtual environment:
+
+``` bash
+py -3.12 -m venv .venv
+```
+
+Activate it on Windows PowerShell:
+
+``` powershell
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-
-# Make a random 256-bit local development JWT secret (PowerShell 5 compatible).
-$jwtBytes = New-Object byte[] 32
-$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
-$rng.GetBytes($jwtBytes)
-$env:JWT_SECRET_KEY = ([BitConverter]::ToString($jwtBytes) -replace '-', '').ToLower()
-$rng.Dispose()
-$env:COOKIE_SECURE = "false"
-
-python -m uvicorn backend.main:app --reload --port 8000
 ```
 
-The default local SQLite database is `backend/sentineltext.db`. To use a separate local test database, set `SENTINEL_DB_PATH` before starting the backend. The backend reads environment variables from the process; it does not automatically load `.env`. `.env.example` documents the available variables.
+Install backend dependencies:
 
-### 2. Frontend
+``` bash
+pip install -r backend/requirements.txt
+```
 
-Open a second terminal at the repository root:
+### 3. Set Up the Frontend
 
-```powershell
+Open a terminal in the project root:
+
+``` bash
 cd frontend
-npm ci
+npm install
+```
+
+### 4. Configure Environment Variables
+
+The backend requires a secure JWT secret.
+
+On Windows PowerShell, generate a random secret:
+
+``` powershell
+$bytes = New-Object byte[] 48
+$rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+$rng.GetBytes($bytes)
+$secret = [Convert]::ToBase64String($bytes)
+
+[Environment]::SetEnvironmentVariable("JWT_SECRET_KEY", $secret, "User")
+$env:JWT_SECRET_KEY = $secret
+
+$rng.Dispose()
+Remove-Variable secret, bytes
+```
+
+Open a new terminal after setting the persistent user environment
+variable.
+
+> **Important:** Never commit secret keys, API tokens, credentials, or
+> `.env` files to GitHub.
+
+------------------------------------------------------------------------
+
+## Running the Application
+
+The frontend and backend run in separate terminals.
+
+### Start the Backend
+
+From the project root, with the virtual environment activated:
+
+``` bash
+python -m uvicorn backend.main:app --reload
+```
+
+The backend should be available at:
+
+``` text
+http://127.0.0.1:8000
+```
+
+### Start the Frontend
+
+Open another terminal:
+
+``` bash
+cd frontend
 npm run dev
 ```
 
-Open the Vite URL shown in the terminal, usually <http://localhost:5173>. Vite proxies `/api` to the backend on port 8000. Create an account and sign in. Microphone recording requires a secure browser context (localhost is allowed) and microphone consent in Settings. Transcription additionally requires `GROQ_API_KEY` and a user click on **Transcribe with Whisper**.
+Vite will display the local development URL, typically:
 
-Stop the backend and frontend with `Ctrl+C` in their respective terminals.
-
-## Environment variables
-
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `JWT_SECRET_KEY` | Yes for authentication | Random signing key, at least 32 characters. Keep it private and stable across instances. |
-| `COOKIE_SECURE` | Production: yes (`true`) | Enables Secure cookies. Vercel defaults to `true`; local HTTP development uses `false`. |
-| `DATABASE_URL` | Vercel: yes | Persistent PostgreSQL connection URL. Locally omit it to use SQLite. |
-| `SENTINEL_DB_PATH` | No | Local SQLite file path override. Do not use SQLite for Vercel user data. |
-| `CORS_ORIGINS` | If frontend is cross-origin | Comma-separated explicit origins, for example `https://app.example.com`. Same-origin Vercel routing normally does not need a production CORS entry. |
-| `FRONTEND_URL` | Password reset | Public frontend origin used in reset links. |
-| `GROQ_API_KEY` | Optional | Enables requested Whisper transcription and consented AI reflections. |
-| `GROQ_MODEL` | Optional | Groq chat model; default `llama-3.1-8b-instant`. |
-| `GROQ_WHISPER_MODEL` | Optional | Groq transcription model; default `whisper-large-v3`. |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_FROM` | For reset email | SMTP host, port, and sender. |
-| `SMTP_USERNAME`, `SMTP_PASSWORD` | If SMTP provider requires login | SMTP credentials; configure as secrets. |
-| `SMTP_STARTTLS` | Optional | Defaults to `true`; set according to the SMTP provider. |
-| `SENTINEL_EMOTION_MODEL` | Optional | Hugging Face text classification model id. Install `backend/requirements-ai.txt`. |
-| `SENTENCE_TRANSFORMER_MODEL` | Optional | Sentence Transformers model id. Install `backend/requirements-ai.txt`. |
-
-Never commit `.env`, provider credentials, database URLs, or local database files.
-
-## API documentation
-
-With the backend running, open <http://127.0.0.1:8000/docs>. Health endpoints are `/` and `/api/health`. Auth routes are `/api/auth/register`, `/api/auth/login`, `/api/auth/me`, `/api/auth/logout`, `/api/auth/forgot-password`, and `/api/auth/reset-password`. Journal and product APIs include `/api/journals`, `/api/transcribe`, `/api/dashboard`, `/api/echo`, `/api/mapper/patterns`, `/api/recommendations`, and `/api/settings`.
-
-## Testing and quality checks
-
-From the repository root:
-
-```powershell
-.\.venv\Scripts\python.exe -m unittest discover -s backend\tests -v
+``` text
+http://localhost:5173
 ```
 
-From `frontend/`:
+Open the displayed URL in your browser.
 
-```powershell
-npx tsc --noEmit --noUnusedLocals --noUnusedParameters
-npm run build
+------------------------------------------------------------------------
+
+## API Documentation
+
+SentinelText uses FastAPI for backend API development.
+
+FastAPI provides automatically generated interactive API documentation.
+
+After starting the backend, open:
+
+-   **Swagger UI:** <http://127.0.0.1:8000/docs>
+-   **OpenAPI Schema:** <http://127.0.0.1:8000/openapi.json>
+
+The documentation allows developers to inspect available endpoints and
+test supported API operations.
+
+------------------------------------------------------------------------
+
+## Privacy and Security
+
+Because SentinelText handles personal journal information, privacy and
+security are important design considerations.
+
+The current prototype includes or is configured around:
+
+-   Password hashing for authentication.
+-   JWT-based authentication.
+-   User-specific data access.
+-   Separation of frontend and backend responsibilities.
+-   Environment-based configuration for sensitive authentication
+    secrets.
+
+### Security Considerations for Further Development
+
+Before production deployment, the project should undergo additional
+security work, including:
+
+-   Comprehensive authorization and access-control testing.
+-   Input validation and secure error handling.
+-   HTTPS and secure deployment configuration.
+-   Database backup and recovery planning.
+-   Data retention and deletion policies.
+-   Consent management for optional external AI services.
+-   Security testing and dependency monitoring.
+
+Sensitive journal information should not be exposed to unauthorized
+users or sent to external services without appropriate consent and
+safeguards.
+
+------------------------------------------------------------------------
+
+## Current Scope and Limitations
+
+SentinelText is an evolving prototype, and its capabilities should be
+understood within the scope of the current implementation.
+
+  -----------------------------------------------------------------------
+  Area                                Current Status
+  ----------------------------------- -----------------------------------
+  User authentication                 Implemented
+
+  Personal journaling                 Implemented
+
+  Voice-to-text input                 Available in the prototype
+
+  Rule-based emotion identification   Implemented
+
+  Emotional Echo similarity analysis  Implemented
+
+  Trigger & Relief Mapper             Implemented prototype functionality
+
+  Coping activity suggestions         Implemented prototype functionality
+
+  30-day emotional journey            Implemented prototype functionality
+
+  Advanced distress prediction        Future development
+
+  Counselor / case-worker dashboard   Proposed
+
+  Role-based professional access      Proposed
+
+  Case management and intervention    Proposed
+  tracking                            
+
+  Validated clinical assessment       Requires further development and
+                                      validation
+
+  District-level anonymized analytics Proposed
+  -----------------------------------------------------------------------
+
+### Important Limitations
+
+-   Emotion identification is approximate and should not be interpreted
+    as a clinical assessment.
+-   Text similarity does not establish psychological or clinical
+    relationships.
+-   The prototype does not provide a clinically validated distress
+    prediction model.
+-   User-generated journal data may be incomplete or subjective.
+-   Recommendations are supportive suggestions, not professional
+    treatment.
+-   Production readiness, scalability, and clinical effectiveness have
+    not been established.
+
+------------------------------------------------------------------------
+
+## Future Roadmap
+
+The next development stages focus on improving analytical capabilities,
+privacy, and support workflows.
+
+### Phase 1 --- Prototype Foundation
+
+-   User authentication and journaling.
+-   Emotion-related text analysis.
+-   Recurring-theme identification.
+-   Emotional journey and coping suggestions.
+
+### Phase 2 --- Advanced AI/ML
+
+-   Evaluate transformer-based emotion models.
+-   Improve semantic similarity using sentence embeddings.
+-   Develop longitudinal trend analysis.
+-   Improve interpretability of generated insights.
+
+### Phase 3 --- Dynamic Monitoring
+
+-   Explore configurable distress assessments.
+-   Develop transparent risk-trend indicators.
+-   Evaluate performance using appropriate datasets and validation
+    methods.
+
+### Phase 4 --- Professional Support Workflows
+
+-   Counselor and case-worker dashboard.
+-   Role-based access control.
+-   Case management and intervention tracking.
+-   Human-reviewed alert prioritization.
+
+### Phase 5 --- Security and Deployment
+
+-   Strengthen privacy and access controls.
+-   Evaluate production database architecture.
+-   Conduct security and performance testing.
+-   Explore controlled pilot deployment with appropriate oversight.
+
+------------------------------------------------------------------------
+
+## Contributing
+
+Contributions, suggestions, and improvements are welcome.
+
+If you would like to contribute:
+
+1.  Fork the repository.
+2.  Create a feature branch.
+3.  Make your changes.
+4.  Test your implementation.
+5.  Submit a pull request with a clear description.
+
+Example:
+
+``` bash
+git checkout -b feature/your-feature-name
+git add .
+git commit -m "Add: describe your changes"
+git push origin feature/your-feature-name
 ```
 
-The backend integration tests use an isolated temporary SQLite database. They do not test a live SMTP provider, Groq account, Hugging Face download, or managed PostgreSQL instance.
+Please avoid committing credentials, private journal data, database
+files containing personal information, virtual environments, or
+generated dependency directories.
 
-## Vercel deployment
+------------------------------------------------------------------------
 
-Deployment configuration is in the root `vercel.json`, root `package.json`, `api/index.py`, and Python requirements files. The Python adapter imports the canonical FastAPI application from `backend/main.py`. The frontend calls same-origin `/api` routes.
+## Disclaimer
 
-Before deploying, you must:
+SentinelText is an experimental, AI-assisted wellness-support prototype
+intended for educational, research, and development purposes.
 
-1. Push the repository to your Git provider and import it into your Vercel account with the repository root as the project root.
-2. Provision a persistent PostgreSQL database and obtain its connection URL. Vercel's function filesystem is temporary; a local SQLite file is not suitable for production data.
-3. Set the private Vercel environment variables `DATABASE_URL`, a unique random `JWT_SECRET_KEY` (32+ characters), and `COOKIE_SECURE=true` for Production, Preview, and Development environments as appropriate.
-4. If the frontend is hosted at a different origin, set `CORS_ORIGINS` to the exact origin(s). Set `FRONTEND_URL` to the deployed frontend origin for reset links.
-5. To enable password reset emails, configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_FROM`, and provider-required SMTP credentials/TLS settings. Without these, password reset email is unavailable.
-6. Optionally configure `GROQ_API_KEY` for Whisper/reflections and configure local-model settings only if installing the optional AI requirements is supported by the deployment build.
-7. Deploy a preview first. Verify `/`, `/api/health`, signup/login/logout, cookie behavior over HTTPS, and database persistence across separate function requests. Only then promote the deployment to production.
+It is **not a medical device, diagnostic tool, emergency-response
+system, or substitute for qualified mental health professionals**.
 
-Do not add `sentineltext.db`, `trades.db`, `.env`, or secrets to the repository. This project has not been publicly deployed or tested against a live Vercel URL. No live deployment is claimed.
+Its emotion-related outputs and recommendations are exploratory and
+should not be used as the sole basis for clinical decisions, risk
+classification, or consequential interventions.
 
-## Screenshots
+Any future distress-monitoring or professional-support functionality
+must be developed with appropriate privacy safeguards, validation, human
+oversight, and ethical review.
 
-Screenshots are not included yet. Replace these placeholders with captures from the running application; do not use mockups as proof of implemented behavior.
+------------------------------------------------------------------------
 
-- Dashboard: _screenshot placeholder_
-- Voice and text journaling: _screenshot placeholder_
-- Emotional Echo: _screenshot placeholder_
-- Trigger & Relief Mapper and Coping Intelligence: _screenshot placeholder_
-- Settings and theme controls: _screenshot placeholder_
+## Project Information
 
-## Current limitations and future work
+  ----------------------------------- ------------------------------------------------------------------
+  **Project**                         SentinelText
 
-- No account deletion flow is currently provided; journal-data deletion is available from Settings.
-- SQLite is for local development. Production requires a configured persistent PostgreSQL database.
-- External email, Groq, and optional model providers require separate credentials and have not been live-service tested.
-- Emotion labels, theme groups, and coping suggestions are reflective aids; they are not clinical measures or medical recommendations.
-- A future release could add account deletion/export, a formal schema migration tool, and deployment smoke tests against an isolated staging environment.
+  **Domain**                          Artificial Intelligence · Machine Learning · Natural Language
+                                      Processing · Mental Wellness Technology
+
+  **Hackathon Context**               Smart India Hackathon 2026
+
+  **Problem Statement**               SIH26094
+
+  **Repository**                      [SentinelText-AI](https://github.com/dnyanu0909/SentinelText-AI)
+  ----------------------------------- ------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+**SentinelText — Making emotional patterns easier to understand, one reflection at a time.**

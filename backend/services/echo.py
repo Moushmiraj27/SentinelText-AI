@@ -38,8 +38,9 @@ def _make_groups(rows: list[Journal]) -> list[list[Journal]]:
             distances, indices = neighbors.kneighbors(embeddings)
             for left, (row_distances, row_indices) in enumerate(zip(distances, indices)):
                 for distance, right in zip(row_distances, row_indices):
-                    if left < int(right):
-                        scores[left, int(right)] = 1.0 - float(distance)
+                    if left != int(right):
+                        a, b = min(left, int(right)), max(left, int(right))
+                        scores[a, b] = max(scores.get((a, b), 0.0), 1.0 - float(distance))
             similarity_threshold = 0.55
         else:
             from sklearn.feature_extraction.text import TfidfVectorizer
@@ -49,8 +50,9 @@ def _make_groups(rows: list[Journal]) -> list[list[Journal]]:
             distances, indices = NearestNeighbors(n_neighbors=min(12, size), metric="cosine").fit(matrix).kneighbors(matrix)
             for left, (row_distances, row_indices) in enumerate(zip(distances, indices)):
                 for distance, right in zip(row_distances, row_indices):
-                    if left < int(right):
-                        scores[left, int(right)] = 1.0 - float(distance)
+                    if left != int(right):
+                        a, b = min(left, int(right)), max(left, int(right))
+                        scores[a, b] = max(scores.get((a, b), 0.0), 1.0 - float(distance))
             similarity_threshold = 0.16
     except Exception:
         # The optional local sentence model may be missing or unavailable; use local TF-IDF.
@@ -63,8 +65,9 @@ def _make_groups(rows: list[Journal]) -> list[list[Journal]]:
             distances, indices = NearestNeighbors(n_neighbors=min(12, size), metric="cosine").fit(matrix).kneighbors(matrix)
             for left, (row_distances, row_indices) in enumerate(zip(distances, indices)):
                 for distance, right in zip(row_distances, row_indices):
-                    if left < int(right):
-                        scores[left, int(right)] = 1.0 - float(distance)
+                    if left != int(right):
+                        a, b = min(left, int(right)), max(left, int(right))
+                        scores[a, b] = max(scores.get((a, b), 0.0), 1.0 - float(distance))
         except (ImportError, ValueError):
             pass
 
